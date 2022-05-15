@@ -5,7 +5,7 @@
 
 class RotaryEncoder{
 public:
-    RotaryEncoder(PinName cA, PinName cB, int encoding);
+    RotaryEncoder(PinName cA, PinName cB, int encoding=1);
     int getPulse();
     float getFreq();
     
