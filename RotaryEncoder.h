@@ -5,7 +5,7 @@
 
 class RotaryEncoder{
 public:
-    RotaryEncoder(PinName cA, PinName cB, int encoding=1);
+    RotaryEncoder(PinName cA, PinName cB);
     int getPulse();
     float getFreq();
     
@@ -14,7 +14,6 @@ public:
     InterruptIn cB;
     Timer t;
     void callback1(void);
-    void callback2(void);
     volatile float v;
     volatile long nowT, dt, prevT;
     volatile int increment, pulse;
