@@ -1,14 +1,13 @@
 #include "RotaryEncoder.h"
 #include "mbed.h"
 
-RotaryEncoder::RotaryEncoder(PinName channelA, PinName channelB) : cA(channelA), cB(channelB){
+RotaryEncoder::RotaryEncoder(PinName channelA, PinName channelB, int mode) : cA(channelA), cB(channelB), mode(mode){
     pulse = 0;
     prevT = 0;
     nowT = 0;
     dt = 0;
     increment = 0;
-    cA.rise(this, &RotaryEncoder::callback1);
-    cA.fall(this, &RotaryEncoder::callback1);
+    encoding(mode);
     t.start();
     }
 
@@ -19,6 +18,20 @@ void RotaryEncoder::callback1(){
         }
     else{
         increment = -1;
+        }
+    pulse = pulse + increment;
+    dt = nowT - prevT;
+    v = increment/dt;
+    prevT = nowT;
+    }
+
+void RotaryEncoder::callback2(){
+    nowT = t.read();
+    if(cB.read() != cA.read()){
+        increment = -1;
+        }
+    else{
+        increment = 1;
         }
     pulse = pulse + increment;
     dt = nowT - prevT;
