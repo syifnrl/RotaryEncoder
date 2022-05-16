@@ -8,11 +8,12 @@ RotaryEncoder::RotaryEncoder(PinName channelA, PinName channelB, int mode) : cA(
     dt = 0;
     increment = 0;
     encoding(mode);
+    t.reset();
     t.start();
     }
 
 void RotaryEncoder::callback1(){
-    nowT = t.read();
+    nowT = t;
     if(cB.read() != cA.read()){
         increment = 1;
         }
@@ -26,7 +27,7 @@ void RotaryEncoder::callback1(){
     }
 
 void RotaryEncoder::callback2(){
-    nowT = t.read();
+    nowT = t;
     if(cB.read() != cA.read()){
         increment = -1;
         }
@@ -39,10 +40,11 @@ void RotaryEncoder::callback2(){
     prevT = nowT;
     }
 
-int RotaryEncoder::getPulse(){
+float RotaryEncoder::getPulse(){
     return pulse;
     }
 
 float RotaryEncoder::getFreq(){
+    if(pulse == 0){return 0;}
     return v;
     }   

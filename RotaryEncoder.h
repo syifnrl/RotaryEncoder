@@ -49,7 +49,7 @@ public:
     RotaryEncoder(PinName cA, PinName cB, int mode=1);
     
     //Ambil posisi encoder
-    int getPulse();
+    float getPulse();
     
     /*ambil kecepatan dari encoder:
         x(t) = ∆x //perpindahan posisi  ->    x = pulse(p)     p(t) = ∆p
@@ -85,8 +85,8 @@ public:
     void callback1(void);
     void callback2(void);
     volatile float v;
-    volatile long nowT, dt, prevT;
-    volatile int increment, pulse;
+    volatile float nowT, dt, prevT;
+    volatile float increment, pulse;
 };
 
 #endif
