@@ -11,14 +11,19 @@
     #include "mbed.h"
     #include "RotaryEncoder.h"
     
-    RotaryEncoder pA(PC_6, PC_5, 4);//
+    Timer waktu;
+    RotaryEncoder pA(PC_6, PC_5, 2);
     Serial pc(USBTX, USBRX);
     
     int main(){
         while(1){
-         pc.printf("%d\n", pA.getPulse());       
+         //get frequency to determine rpm, rpm formula is
+         // rpm = freq/ppr*60, the encoding that is used determine the value of ppr
+         float rpm = pA.getFreq() / 422 * 60;
+         pc.printf("%f \t %f\n", pA.getPulse(), rpm);       
         }
     }
+
     
     ------------------------------------------------------------------------------------------------------------------------------
     
@@ -31,12 +36,16 @@
     #include "mbed.h"
     #include "RotaryEncoder.h"
     
-    RotaryEncoder pA(PC_6, PC_5, 4);//
+    Timer waktu;
+    RotaryEncoder pA(PC_6, PC_5, 2);
     Serial pc(USBTX, USBRX);
     
     int main(){
         while(1){
-         pc.printf("%d\n", pA.getPulse());       
+         //frekuensi encoder dapat digunakan untuk mendapatkan rpm
+         // rpm = freq/ppr*60, dimana ppr ditentukan oleh teknik encoding yang digunakan
+         float rpm = pA.getFreq() / 422 * 60;
+         pc.printf("%f \t %f\n", pA.getPulse(), rpm);       
         }
     }
     
