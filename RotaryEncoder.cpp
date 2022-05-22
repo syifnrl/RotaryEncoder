@@ -48,3 +48,7 @@ float RotaryEncoder::getFreq(){
     if(pulse == 0){return 0;}
     return v;
     }   
+
+void RotaryEncoder::resetPulse(){
+    pulse = 0;
+}
