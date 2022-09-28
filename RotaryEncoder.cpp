@@ -1,7 +1,7 @@
 #include "RotaryEncoder.h"
 #include "mbed.h"
 
-RotaryEncoder::RotaryEncoder(PinName channelA, PinName channelB, int mode) : cA(channelA), cB(channelB), mode(mode){
+RotaryEncoder::RotaryEncoder(PinName channelA, PinName channelB, int mode, float ppr) : cA(channelA), cB(channelB), mode(mode), ppr(ppr){
     pulse = 0;
     prevT = 0;
     nowT = 0;
