@@ -7,6 +7,7 @@ RotaryEncoder::RotaryEncoder(PinName channelA, PinName channelB, int mode) : cA(
     nowT = 0;
     dt = 0;
     increment = 0;
+    pi = 3.14159265358979323846;
     encoding(mode);
     t.reset();
     t.start();
@@ -52,3 +53,11 @@ float RotaryEncoder::getFreq(){
 void RotaryEncoder::resetPulse(){
     pulse = 0;
 }
+
+float RotaryEncoder::getRPM(){
+    return v/(ppr*mode)*60;
+    }
+
+float RotaryEncoder::getRadian(){
+    return (2*pi*v)/(ppr*dt);
+    }

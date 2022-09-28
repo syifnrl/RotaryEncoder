@@ -45,30 +45,57 @@
 
 class RotaryEncoder{
 public:
-    //inisialisasi
-    RotaryEncoder(PinName cA, PinName cB, int mode=1);
+    /*
+        initialization
+        
+        --------------
+        
+        inisialisasi
+    */
+    RotaryEncoder(PinName cA, PinName cB, int mode=1, float ppr=200);
     
-    //Ambil posisi encoder
+    /*
+        Get the pulse counted by encoder
+        
+        --------------------------------
+        
+        Ambil pulse dari encoder
+    */
     float getPulse();
     
-    /*ambil kecepatan dari encoder:
+    /*
+    get the speed of the encoder:
+        x(t) = ∆x //position function  ->    x = pulse, pulse(t) = ∆pulse
+        v(t) = ∆x/∆t //speed, the derivative of x(t)        ->    v(t) = ∆pulse/∆t
+             = x'(t) 
+    
+    --------------------------------------------------------------------------------
+    
+    ambil kecepatan dari encoder:
         x(t) = ∆x //perpindahan posisi  ->    x = pulse(p)     p(t) = ∆p
         v(t) = ∆x/∆t //kecepatan        ->    v(t) = ∆p/∆t
              = x'(t) 
     */  
     float getFreq();
     
-    //Ambil mode encoding
+    //Encoding mode, see references above
     int getEncoding(){return mode;}
     
     //reset pulse
     void resetPulse();
+    
+    //get speed of motor
+    float getRPM();
+    float getRadian();
+    
     private:
     InterruptIn cA;
     InterruptIn cB;
     Timer t;
     protected:
     const int mode;
+    float ppr;
+    const float pi;
     void encoding(int val){
         if(val == 1){
             cA.rise(this, &RotaryEncoder::callback1);
