@@ -11,7 +11,7 @@
     #include "mbed.h"
     #include "RotaryEncoder.h"
     
-    RotaryEncoder pA(PC_6, PC_5, 4);//
+    RotaryEncoder pA(PC_6, PC_5, 4, 270);//
     Serial pc(USBTX, USBRX);
     
     int main(){
@@ -31,7 +31,7 @@
     #include "mbed.h"
     #include "RotaryEncoder.h"
     
-    RotaryEncoder pA(PC_6, PC_5, 4);//
+    RotaryEncoder pA(PC_6, PC_5, 4, 270);//
     Serial pc(USBTX, USBRX);
     
     int main(){
