@@ -84,6 +84,9 @@ public:
     //reset pulse
     void resetPulse();
     
+    //get degree
+    float getDegree();
+    
     //get speed of motor
     float getRPM();
     float getRadian();
@@ -115,6 +118,7 @@ public:
     void callback1(void);
     void callback2(void);
     volatile float v;
+    float pos_degree;
     volatile float nowT, dt, prevT;
     volatile float increment, pulse;
 };
