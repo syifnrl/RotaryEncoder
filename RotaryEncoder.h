@@ -11,7 +11,7 @@
     #include "mbed.h"
     #include "RotaryEncoder.h"
     
-    RotaryEncoder pA(PC_6, PC_5, 4, 270);//
+    RotaryEncoder pA(PC_6, PC_5, 4, 200);// PC_6 and PC_5 are the pin used for hall sensor, 4 represent the encoding, and 200 is the ppr of the rotor
     Serial pc(USBTX, USBRX);
     
     int main(){
@@ -31,7 +31,7 @@
     #include "mbed.h"
     #include "RotaryEncoder.h"
     
-    RotaryEncoder pA(PC_6, PC_5, 4, 270);//
+    RotaryEncoder pA(PC_6, PC_5, 4, 200);// PC_6 dan PC_5 adalah pin untuk input hall sensor, 4 adalah jenis encoding yang dipakai, dan 200 adalah ppr dari rotor
     Serial pc(USBTX, USBRX);
     
     int main(){
@@ -45,40 +45,20 @@
 
 class RotaryEncoder{
 public:
-    /*
-        initialization
-        
-        --------------
-        
-        inisialisasi
-    */
+    //inisialisasi
     RotaryEncoder(PinName cA, PinName cB, int mode=1, float ppr=200);
     
-    /*
-        Get the pulse counted by encoder
-        
-        --------------------------------
-        
-        Ambil pulse dari encoder
-    */
+    //Ambil posisi encoder
     float getPulse();
     
-    /*
-    get the speed of the encoder:
-        x(t) = ∆x //position function  ->    x = pulse, pulse(t) = ∆pulse
-        v(t) = ∆x/∆t //speed, the derivative of x(t)        ->    v(t) = ∆pulse/∆t
-             = x'(t) 
-    
-    --------------------------------------------------------------------------------
-    
-    ambil kecepatan dari encoder:
+    /*ambil kecepatan dari encoder:
         x(t) = ∆x //perpindahan posisi  ->    x = pulse(p)     p(t) = ∆p
         v(t) = ∆x/∆t //kecepatan        ->    v(t) = ∆p/∆t
              = x'(t) 
     */  
     float getFreq();
     
-    //Encoding mode, see references above
+    //Ambil mode encoding
     int getEncoding(){return mode;}
     
     //reset pulse
@@ -96,9 +76,9 @@ public:
     InterruptIn cB;
     Timer t;
     protected:
+    double pi;
     const int mode;
-    float ppr;
-    const float pi;
+    const float ppr;
     void encoding(int val){
         if(val == 1){
             cA.rise(this, &RotaryEncoder::callback1);
@@ -118,7 +98,6 @@ public:
     void callback1(void);
     void callback2(void);
     volatile float v;
-    float pos_degree;
     volatile float nowT, dt, prevT;
     volatile float increment, pulse;
 };

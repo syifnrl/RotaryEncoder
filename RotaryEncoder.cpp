@@ -7,9 +7,8 @@ RotaryEncoder::RotaryEncoder(PinName channelA, PinName channelB, int mode, float
     nowT = 0;
     dt = 0;
     increment = 0;
-    pos_degree = 0;
-    pi = 3.14159265358979323846;
     encoding(mode);
+    pi = 3.14159265358979323846;
     t.reset();
     t.start();
     }
