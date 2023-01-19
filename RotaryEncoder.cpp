@@ -51,7 +51,7 @@ float RotaryEncoder::getPulse(){
 
 float RotaryEncoder::getFreq(){
     if(pulse == 0){return 0;}
-    frequency = 1/(periode/4);
+    frequency = 1/(periode/mode);
     return frequency;
     }   
 
