@@ -51,11 +51,7 @@ public:
     //Ambil posisi encoder
     float getPulse();
     
-    /*ambil kecepatan dari encoder:
-        x(t) = ∆x //perpindahan posisi  ->    x = pulse(p)     p(t) = ∆p
-        v(t) = ∆x/∆t //kecepatan        ->    v(t) = ∆p/∆t
-             = x'(t) 
-    */  
+    /*ambil kecepatan dari encoder*/  
     float getFreq();
     
     //Ambil mode encoding
@@ -97,9 +93,9 @@ public:
         }
     void callback1(void);
     void callback2(void);
-    volatile float v;
+    volatile float periode, frequency, sampling_periode;
     volatile float nowT, dt, prevT;
-    volatile float increment, pulse;
+    volatile float increment, pulse, prevPulse;
 };
 
 #endif
