@@ -27,7 +27,6 @@ void RotaryEncoder::callback1(){
     prevT = nowT;
     periode = dt/(pulse - prevPulse);
     sampling_periode = (pulse - prevPulse)/dt;
-    frequency = 1/periode;
     }
 
 void RotaryEncoder::callback2(){
@@ -44,7 +43,6 @@ void RotaryEncoder::callback2(){
     prevT = nowT;
     periode = dt/(pulse - prevPulse);
     sampling_periode = (pulse - prevPulse)/dt;
-    frequency = 1/periode;
     }
 
 float RotaryEncoder::getPulse(){
@@ -53,7 +51,8 @@ float RotaryEncoder::getPulse(){
 
 float RotaryEncoder::getFreq(){
     if(pulse == 0){return 0;}
-    return frequency/mode;
+    frequency = 1/(periode/4);
+    return frequency;
     }   
 
 void RotaryEncoder::resetPulse(){
