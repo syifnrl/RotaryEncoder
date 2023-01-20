@@ -46,13 +46,13 @@
 class RotaryEncoder{
 public:
     //inisialisasi
-    RotaryEncoder(PinName cA, PinName cB, int mode=1, float ppr=200);
+    RotaryEncoder(PinName cA, PinName cB, int mode=1, double ppr=200);
     
     //Ambil posisi encoder
-    float getPulse();
+    double getPulse();
     
     /*ambil kecepatan dari encoder*/  
-    float getFreq();
+    double getFreq();
     
     //Ambil mode encoding
     int getEncoding(){return mode;}
@@ -74,7 +74,7 @@ public:
     protected:
     double pi;
     const int mode;
-    const float ppr;
+    const double ppr;
     void encoding(int val){
         if(val == 1){
             cA.rise(this, &RotaryEncoder::callback1);
@@ -93,9 +93,9 @@ public:
         }
     void callback1(void);
     void callback2(void);
-    volatile float periode, frequency, sampling_periode;
-    volatile float nowT, dt, prevT;
-    volatile float increment, pulse, prevPulse;
+    volatile double periode, frequency, sampling_periode;
+    volatile double nowT, dt, prevT;
+    volatile double increment, counter, pulse, prevPulse, dp, v;
 };
 
 #endif
