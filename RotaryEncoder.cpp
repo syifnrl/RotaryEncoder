@@ -46,6 +46,8 @@ double RotaryEncoder::getFreq(){
 
 void RotaryEncoder::resetPulse(){
     pulse = 0; counter = 0;
+    t.reset();
+    t.start();
 }
 
 double RotaryEncoder::getDegree(){
