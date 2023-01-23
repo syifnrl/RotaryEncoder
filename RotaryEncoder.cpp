@@ -39,7 +39,8 @@ double RotaryEncoder::getPulse(){
     }
 
 double RotaryEncoder::getFreq(){
-    if(pulse == 0){return 0;}
+    pulse = counter/mode;
+    periode = t/pulse;
     frequency = 1/periode;
     return frequency;
     }   
