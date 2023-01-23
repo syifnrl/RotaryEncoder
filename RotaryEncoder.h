@@ -61,11 +61,11 @@ public:
     void resetPulse();
     
     //get degree
-    float getDegree();
+    double getDegree();
     
     //get speed of motor
-    float getRPM();
-    float getRadian();
+    double getRPM();
+    double getRadian();
     
     private:
     InterruptIn cA;
