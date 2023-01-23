@@ -45,7 +45,7 @@ double RotaryEncoder::getFreq(){
     }   
 
 void RotaryEncoder::resetPulse(){
-    pulse = 0; counter = 0;
+    pulse = 0; counter = 0; prevPulse = 0; prevT = 0;
     t.reset();
     t.start();
 }
