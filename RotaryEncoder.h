@@ -93,7 +93,7 @@ public:
         }
     void callback1(void);
     void callback2(void);
-    volatile double periode, frequency, sampling_periode;
+    volatile double periode, frequency;
     volatile double nowT, dt, prevT;
     volatile double increment, counter, pulse, prevPulse, dp, v;
 };
