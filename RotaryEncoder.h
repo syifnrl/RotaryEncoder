@@ -75,24 +75,24 @@ public:
     double pi;
     const int mode;
     const double ppr;
-    void encoding(int val){
-        if(val == 1){
-            cA.rise(this, &RotaryEncoder::callback1);
-            }
-        else if(val == 2){
-            cA.rise(this, &RotaryEncoder::callback1);
-            cA.fall(this, &RotaryEncoder::callback1);
-            }
-        else if(val == 4){
-            cA.rise(this, &RotaryEncoder::callback1);
-            cA.fall(this, &RotaryEncoder::callback1);
-    
-            cB.rise(this, &RotaryEncoder::callback2);
-            cB.fall(this, &RotaryEncoder::callback2);
-            }
-        }
     void callback1(void);
     void callback2(void);
+    void encoding(int val){
+        if(val == 1){
+            cA.rise(callback(this, &RotaryEncoder::callback1));
+            }
+        else if(val == 2){
+            cA.rise(callback(this, &RotaryEncoder::callback1));
+            cA.fall(callback(this, &RotaryEncoder::callback1));
+            }
+        else if(val == 4){
+            cA.rise(callback(this, &RotaryEncoder::callback1));
+            cA.fall(callback(this, &RotaryEncoder::callback1));
+    
+            cB.rise(callback(this, &RotaryEncoder::callback2));
+            cB.fall(callback(this, &RotaryEncoder::callback2));
+            }
+        }
     volatile double periode, frequency;
     volatile double nowT, dt, prevT;
     volatile double increment, counter, pulse, prevPulse, dp, v;
