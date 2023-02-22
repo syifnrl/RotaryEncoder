@@ -39,6 +39,7 @@ double RotaryEncoder::getPulse(){
     }
 
 double RotaryEncoder::getFreq(){
+    pulse = counter/mode;
     if(pulse == 0){return 0;}
     pulse = counter/mode;
     periode = t/pulse;
@@ -47,6 +48,7 @@ double RotaryEncoder::getFreq(){
     }   
 
 void RotaryEncoder::resetPulse(){
+    pulse = counter/mode;
     pulse = 0; counter = 0;
     pulse = 0; counter = 0; prevPulse = 0; prevT = 0;
     t.reset();
@@ -54,11 +56,13 @@ void RotaryEncoder::resetPulse(){
 }
 
 double RotaryEncoder::getDegree(){
+    pulse = counter/mode;
     return (pulse/ppr)*360;
     }
 
 double RotaryEncoder::getRPM(){
     nowT = t;
+    pulse = counter/mode;
     dp = pulse - prevPulse;
     dt = nowT - prevT;
     prevPulse = pulse;
@@ -69,6 +73,7 @@ double RotaryEncoder::getRPM(){
 
 double RotaryEncoder::getRadian(){
     nowT = t;
+    pulse = counter/mode;
     dp = pulse - prevPulse;
     dt = nowT - prevT;
     prevPulse = pulse;
