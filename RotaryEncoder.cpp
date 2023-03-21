@@ -25,10 +25,10 @@ void RotaryEncoder::callback1(){
 
 void RotaryEncoder::callback2(){
     if(cA.read() != cB.read()){
-        increment = 1;
+        increment = -1;
         }
     else{
-        increment = -1;
+        increment = 1;
         }
     counter = counter + increment;
     }
