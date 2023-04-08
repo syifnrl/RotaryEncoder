@@ -1,14 +1,26 @@
 #include "RotaryEncoder.h"
 #include "mbed.h"
 
-RotaryEncoder::RotaryEncoder(PinName channelA, PinName channelB, int mode, double ppr) : cA(channelA), cB(channelB), mode(mode), ppr(ppr){
+using namespace std::chrono;
+
+RotaryEncoder::RotaryEncoder(PinName channelA, PinName channelB, int mode, float ppr) : cA(channelA), cB(channelB), _mode(mode), _ppr(ppr){
     pulse = 0;
     prevT = 0;
     nowT = 0;
     dt = 0;
     increment = 0;
-    encoding(mode);
     pi = 3.14159265358979323846;
+    if(_mode == 2){
+    cA.rise(callback(this, &RotaryEncoder::callback1));
+    cA.fall(callback(this, &RotaryEncoder::callback1));
+    }
+    if(_mode == 4){
+    cA.rise(callback(this, &RotaryEncoder::callback1));
+    cA.fall(callback(this, &RotaryEncoder::callback1));
+
+    cB.rise(callback(this, &RotaryEncoder::callback2));
+    cB.fall(callback(this, &RotaryEncoder::callback2));
+    }
     t.reset();
     t.start();
     }
@@ -20,7 +32,7 @@ void RotaryEncoder::callback1(){
     else{
         increment = -1;
         }
-    counter = counter + increment;
+    counter += increment;
     }
 
 void RotaryEncoder::callback2(){
@@ -30,54 +42,54 @@ void RotaryEncoder::callback2(){
     else{
         increment = 1;
         }
-    counter = counter + increment;
+    counter += increment;
     }
 
-double RotaryEncoder::getPulse(){
-    pulse = counter/mode;
+float RotaryEncoder::getPulse(){
+    pulse = counter;
     return pulse;
     }
 
-double RotaryEncoder::getFreq(){
-    pulse = counter/mode;
+float RotaryEncoder::getFreq(){
+    pulse = counter/_mode;
     if(pulse == 0){return 0;}
-    pulse = counter/mode;
+    pulse = counter/_mode;
     periode = t/pulse;
     frequency = 1/periode;
     return frequency;
     }   
 
 void RotaryEncoder::resetPulse(){
-    pulse = counter/mode;
+    pulse = counter/_mode;
     pulse = 0; counter = 0;
     pulse = 0; counter = 0; prevPulse = 0; prevT = 0;
     t.reset();
     t.start();
 }
 
-double RotaryEncoder::getDegree(){
-    pulse = counter/mode;
-    return (pulse/ppr)*360;
+float RotaryEncoder::getDegree(){
+    pulse = counter/_mode;
+    return (pulse/_ppr)*360;
     }
 
-double RotaryEncoder::getRPM(){
-    nowT = t;
-    pulse = counter/mode;
+float RotaryEncoder::getRPM(){
+    nowT = duration<float>{t.elapsed_time()}.count();
+    pulse = counter;
     dp = pulse - prevPulse;
-    dt = nowT - prevT;
+    dt = (nowT - prevT);
     prevPulse = pulse;
     prevT = nowT;
     v = dp/dt;
-    return (v/ppr)*60;
+    return (v/_ppr)*60;
     }
 
-double RotaryEncoder::getRadian(){
-    nowT = t;
-    pulse = counter/mode;
+float RotaryEncoder::getRadian(){
+    nowT = duration<float>{t.elapsed_time()}.count();
+    pulse = counter;
     dp = pulse - prevPulse;
-    dt = nowT - prevT;
+    dt = (nowT - prevT);
     prevPulse = pulse;
     prevT = nowT;
     v = dp/dt;
-    return (2*pi*v)/ppr;
+    return (2*pi*v)/_ppr;
     }
