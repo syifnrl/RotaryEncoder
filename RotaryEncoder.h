@@ -50,9 +50,7 @@ public:
     
     //Ambil posisi encoder
     float getPulse();
-    
-    /*ambil kecepatan dari encoder*/  
-    float getFreq();
+
     
     //reset pulse
     void resetPulse();
@@ -73,7 +71,6 @@ public:
     const float _ppr;
     void callback1(void);
     void callback2(void);
-    volatile float periode, frequency;
     volatile float nowT, dt, prevT;
     volatile float increment, counter, pulse, prevPulse, dp, v;
 };
