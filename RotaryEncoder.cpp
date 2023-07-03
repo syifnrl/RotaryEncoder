@@ -1,78 +1,85 @@
-#ifndef MBED_ROTARYENCODER_H
-#define MBED_ROTARYENCODER_H
- 
+#include "RotaryEncoder.h"
 #include "mbed.h"
-/*
-    A library for quadrate incremental encoder. There are three encoding
-    that can be used to determine posistion in quadrate incremental encoder; X1, X2, X4. For more information,
-    you can see in: https://www.motioncontroltips.com/faq-what-do-x1-x2-and-x4-position-encoding-mean-for-incremental-encoders/
-    
-    Example on using X4 encoding: 
-    #include "mbed.h"
-    #include "RotaryEncoder.h"
-    
-    RotaryEncoder pA(PC_6, PC_5, 4, 200);// PC_6 and PC_5 are the pin used for hall sensor, 4 represent the encoding, and 200 is the ppr of the rotor
-    Serial pc(USBTX, USBRX);
-    
-    int main(){
-        while(1){
-         pc.printf("%d\n", pA.getPulse());       
-        }
+
+
+RotaryEncoder::RotaryEncoder(PinName channelA, PinName channelB, int mode, float ppr) : cA(channelA), cB(channelB), _mode(mode), _ppr(ppr){
+    pulse = 0;
+    prevT = 0;
+    nowT = 0;
+    dt = 0;
+    increment = 0;
+    pi = 3.14159265358979323846;
+    if(_mode == 2){
+    cA.rise(callback(this, &RotaryEncoder::callback1));
+    cA.fall(callback(this, &RotaryEncoder::callback1));
     }
-    
-    ------------------------------------------------------------------------------------------------------------------------------
-    
-    Library untuk quadrate incremental encoder. Terdapat tiga jenis encoding
-    yang dapat dipakai dalam menentukan posisi pada quadrate incremental encoder.
-    Untuk informasi lebih lanjut, dapat dilihat pada: 
-    https://www.motioncontroltips.com/faq-what-do-x1-x2-and-x4-position-encoding-mean-for-incremental-encoders/
-    
-    Contoh code untuk penggunaan encoding X4:
-    #include "mbed.h"
-    #include "RotaryEncoder.h"
-    
-    RotaryEncoder pA(PC_6, PC_5, 4, 200);// PC_6 dan PC_5 adalah pin untuk input hall sensor, 4 adalah jenis encoding yang dipakai, dan 200 adalah ppr dari rotor
-    Serial pc(USBTX, USBRX);
-    
-    int main(){
-        while(1){
-         pc.printf("%d\n", pA.getPulse());       
-        }
+    if(_mode == 4){
+    cA.rise(callback(this, &RotaryEncoder::callback1));
+    cA.fall(callback(this, &RotaryEncoder::callback1));
+
+    cB.rise(callback(this, &RotaryEncoder::callback2));
+    cB.fall(callback(this, &RotaryEncoder::callback2));
     }
-    
+    t.reset();
+    t.start();
+    }
 
-*/
+void RotaryEncoder::callback1(){
+    if(cB.read() != cA.read()){
+        increment = 1;
+        }
+    else{
+        increment = -1;
+        }
+    counter += increment;
+    }
 
-class RotaryEncoder{
-public:
-    //inisialisasi
-    RotaryEncoder(PinName cA, PinName cB, int mode=2, float ppr=200);
-    
-    //Ambil posisi encoder
-    float getPulse();
+void RotaryEncoder::callback2(){
+    if(cA.read() != cB.read()){
+        increment = -1;
+        }
+    else{
+        increment = 1;
+        }
+    counter += increment;
+    }
 
-    
-    //reset pulse
-    void resetPulse();
-    
-    //get degree
-    float getDegree();
-    
-    //get speed of motor
-    float getRPM();
-    float getRadian();
-    
-    private:
-    InterruptIn cA;
-    InterruptIn cB;
-    Timer t;
-    float pi;
-    const int _mode;
-    const float _ppr;
-    void callback1(void);
-    void callback2(void);
-    volatile float nowT, dt, prevT;
-    volatile float increment, counter, pulse, prevPulse, dp, v;
-};
+float RotaryEncoder::getPulse(){
+    pulse = counter;
+    return pulse;
+    }  
 
-#endif
+void RotaryEncoder::resetPulse(){
+    pulse = counter/_mode;
+    pulse = 0; counter = 0;
+    pulse = 0; counter = 0; prevPulse = 0; prevT = 0;
+    t.reset();
+    t.start();
+}
+
+float RotaryEncoder::getDegree(){
+    pulse = counter/_mode;
+    return (pulse/_ppr)*360;
+    }
+
+float RotaryEncoder::getRPM(){
+    nowT = t;
+    pulse = counter;
+    dp = pulse - prevPulse;
+    dt = (nowT - prevT);
+    prevPulse = pulse;
+    prevT = nowT;
+    v = dp/dt;
+    return (v/_ppr)*60;
+    }
+
+float RotaryEncoder::getRadian(){
+    nowT = t;
+    pulse = counter;
+    dp = pulse - prevPulse;
+    dt = (nowT - prevT);
+    prevPulse = pulse;
+    prevT = nowT;
+    v = dp/dt;
+    return (2*pi*v)/_ppr;
+    }
