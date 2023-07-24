@@ -9,6 +9,8 @@ RotaryEncoder::RotaryEncoder(PinName channelA, PinName channelB, int mode, float
     dt = 0;
     increment = 0;
     pi = 3.14159265358979323846;
+    cA.mode(PullUp);
+    cB.mode(PullUp);
     if(_mode == 2){
     cA.rise(callback(this, &RotaryEncoder::callback1));
     cA.fall(callback(this, &RotaryEncoder::callback1));
@@ -45,7 +47,7 @@ void RotaryEncoder::callback2(){
     }
 
 float RotaryEncoder::getPulse(){
-    pulse = counter;
+    pulse = counter/_mode;
     return pulse;
     }  
 
