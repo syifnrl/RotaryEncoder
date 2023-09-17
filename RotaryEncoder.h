@@ -66,22 +66,14 @@ public:
     private:
     InterruptIn cA;
     InterruptIn cB;
-<<<<<<< HEAD
     Timer time;
-=======
-    Timer t;
->>>>>>> 9087e502acbd25b07a4a65095ad3a3b7f9548b30
     float pi;
     const int _mode;
     const float _ppr;
     void callback1(void);
     void callback2(void);
     volatile float nowT, dt, prevT;
-<<<<<<< HEAD
     volatile float counter, pulse, prevPulse, dp, v;
-=======
-    volatile float increment, counter, pulse, prevPulse, dp, v;
->>>>>>> 9087e502acbd25b07a4a65095ad3a3b7f9548b30
 };
 
 #endif
