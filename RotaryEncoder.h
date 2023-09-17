@@ -46,56 +46,34 @@
 class RotaryEncoder{
 public:
     //inisialisasi
-    RotaryEncoder(PinName cA, PinName cB, int mode=1, double ppr=200);
+    RotaryEncoder(PinName cA, PinName cB, int mode=2, float ppr=200);
     
     //Ambil posisi encoder
-    double getPulse();
-    
-    /*ambil kecepatan dari encoder*/  
-    double getFreq();
-    
-    //Ambil mode encoding
-    int getEncoding(){return mode;}
+    float getPulse();
+
     
     //reset pulse
     void resetPulse();
     
     //get degree
     float getDegree();
+    float getRadian();
     
     //get speed of motor
     float getRPM();
-    float getRadian();
+    float getRadpS();
     
     private:
     InterruptIn cA;
     InterruptIn cB;
-    Timer t;
-    protected:
-    double pi;
-    const int mode;
-    const double ppr;
-    void encoding(int val){
-        if(val == 1){
-            cA.rise(this, &RotaryEncoder::callback1);
-            }
-        else if(val == 2){
-            cA.rise(this, &RotaryEncoder::callback1);
-            cA.fall(this, &RotaryEncoder::callback1);
-            }
-        else if(val == 4){
-            cA.rise(this, &RotaryEncoder::callback1);
-            cA.fall(this, &RotaryEncoder::callback1);
-    
-            cB.rise(this, &RotaryEncoder::callback2);
-            cB.fall(this, &RotaryEncoder::callback2);
-            }
-        }
+    Timer time;
+    float pi;
+    const int _mode;
+    const float _ppr;
     void callback1(void);
     void callback2(void);
-    volatile double periode, frequency, sampling_periode;
-    volatile double nowT, dt, prevT;
-    volatile double increment, counter, pulse, prevPulse, dp, v;
+    volatile float nowT, dt, prevT;
+    volatile float counter, pulse, prevPulse, dp, v;
 };
 
 #endif
